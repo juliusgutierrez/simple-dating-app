@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using API.Controllers;
 using DatingApp.Data;
 using DatingApp.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Controllers
 {
-  [ApiController]
-  [Route("/api/[controller]")] //api/users
-  public class UsersController
+  
+  public class UsersController: BaseAPIController
   {
     private readonly DataContext _context;
 
