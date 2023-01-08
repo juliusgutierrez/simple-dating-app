@@ -12,24 +12,13 @@ namespace API.Extensions
     public static class ApplicationServiceExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, 
-            IConfiguration config, string myAllowSpecificOrigins) 
+            IConfiguration config) 
         {
             services.AddDbContext<DataContext>(opt => 
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<ITokenService, TokenService>();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: myAllowSpecificOrigins, 
-                                builder =>
-                                {
-                                    builder.WithOrigins("http://localhost:4200",
-                                                        "https://localhost:4200");
-                                });
-            });
-
             return services;
         }
     }
