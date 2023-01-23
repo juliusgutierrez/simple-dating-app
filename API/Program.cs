@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using API.Extensions;
 using API.Interfaces;
+using API.middleware;
 using API.Services;
 using DatingApp.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
