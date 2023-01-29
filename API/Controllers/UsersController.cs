@@ -1,5 +1,8 @@
 using System.Reflection.Metadata.Ecma335;
 using API.Controllers;
+using API.DTOs;
+using API.Interfaces;
+using AutoMapper;
 using DatingApp.Data;
 using DatingApp.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -12,25 +15,26 @@ namespace DatingApp.Controllers
   [Authorize]
   public class UsersController: BaseAPIController
   {
-    private readonly DataContext _context;
+    private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
 
-    public UsersController(DataContext context)
+    public UsersController(IUserRepository userRepository, IMapper mapper)
     {
-      _context = context;
+      _userRepository = userRepository;
+      _mapper = mapper;
     }
 
-    [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
     {
-      var users = await _context.Users.ToListAsync();
-      return users;
+      return Ok(await _userRepository.GetMemberAsync());
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<AppUser>> GetUser(int id)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
     {
-      return await _context.Users.FindAsync(id);
+      return await _userRepository.GetMemberByUsernameAsync(username);
+      
     }
   }
 }
